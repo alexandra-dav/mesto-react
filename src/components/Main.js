@@ -29,11 +29,6 @@ export function Main (props) {
       .catch(err => console.log('Ошибка: ', err, ' код ошибки: ', err.status));
   }, []);
 
-/*   function handleClick(data) {
-    console.log(data.link);
-    props.onCardClick(data.link);
-  }  */
-
   return (
     <main className="main">
       <section className="profile">
@@ -57,8 +52,7 @@ export function Main (props) {
               name={card.name}
               link={card.link}
               onCardImgClick={() => {
-                console.log(card.link);
-                props.onCardClick(card.link);
+                props.onCardClick(card);
               }}
             />
           )

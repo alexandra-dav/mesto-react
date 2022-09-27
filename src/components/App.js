@@ -10,29 +10,21 @@ function App() {
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState();
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState();
   const [isPhotoPopupOpen, setIsPhotoPopupOpen] = React.useState();
-  const [selectedCard, handleCardClick] = React.useState();
+  const [selectedCard, handleCardClick] = React.useState({});
+  
 
   function handleEditAvatarClick() {
-    const avatarPopup = document.querySelector('.popup_avatar');       
-    avatarPopup.classList.add("popup_opened");
     setIsEditAvatarPopupOpen(!isEditAvatarPopupOpen);
   };
   function handleEditProfileClick() {
-    const profilePopup = document.querySelector('.popup_profile');       
-    profilePopup.classList.add("popup_opened");
     setIsEditProfilePopupOpen(!isEditProfilePopupOpen);
   };
   function handleAddPlaceClick() {
-    const plasePopup = document.querySelector('.popup_elements');       
-    plasePopup.classList.add("popup_opened");
     setIsAddPlacePopupOpen(!isAddPlacePopupOpen);
   };
-  function handleOpenPhotoClick(link) {
-    console.log(link);
-    const photoPopup = document.querySelector('.popup_photo');       
-    photoPopup.classList.add("popup_opened");
+  function handleOpenPhotoClick(data) {
     setIsPhotoPopupOpen(!isPhotoPopupOpen);
-    handleCardClick(link);
+    handleCardClick({link: data.link, name: data.name});
   };
   function handleClosePopap (){
     setIsAddPlacePopupOpen(false);
@@ -57,6 +49,10 @@ function App() {
       document.removeEventListener('keydown', handleEscClose);
     };
   });
+  function handleChange(test) {
+    let modififkator = test ? "popup_opened" : ""; 
+    return modififkator;
+  }
 
   return (
     <>
@@ -73,6 +69,7 @@ function App() {
         name="delete-card"
         buttonText="Да"
         isOpen={false}
+        onChange={handleChange}
       />
       <PopupWithForm 
         title="Редактировать профиль"
@@ -81,17 +78,18 @@ function App() {
         children={
           <>
           <fieldset className="popup__fieldset">
-            <input type="text" id="popupName" name="name" className="popup__input popup__input_form_name" placeholder="Имя" value="" minLength="2" maxLength="40" required />
+            <input type="text" id="popupName" name="name" className="popup__input popup__input_form_name" placeholder="Имя" value="" minLength="2" maxLength="40" required defaultValue="Имя" />
             <span className="popupName-error"></span>
           </fieldset>
           <fieldset className="popup__fieldset">
-            <input type="text" id="popupJob" name="about" className="popup__input popup__input_form_job" placeholder="О себе" value="" minLength="2" maxLength="200" required />
+            <input type="text" id="popupJob" name="about" className="popup__input popup__input_form_job" placeholder="О себе" value="" minLength="2" maxLength="200" required defaultValue="О себе" />
             <span className="popupJob-error"></span>
           </fieldset>
           </>
         }
         isOpen={isEditProfilePopupOpen}
         onClose={handleClikButtunClose}
+        onChange={handleChange}
       />
       <PopupWithForm 
         title="Новое место"
@@ -100,17 +98,18 @@ function App() {
         children={
           <>
           <fieldset className="popup__fieldset">
-            <input type="text" id="popupPlase" name="name" className="popup__input popup__input_form_plase" placeholder="Название" value="" minLength="2" maxLength="30" required />
+            <input type="text" id="popupPlase" name="name" className="popup__input popup__input_form_plase" placeholder="Название" value="" minLength="2" maxLength="30" required defaultValue="Название" />
             <span className="popupPlase-error"></span>
           </fieldset>
           <fieldset className="popup__fieldset">
-            <input type="url" id="popupLink" name="link" className="popup__input popup__input_form_link" placeholder="Ссылка на картинку" value="" required />
+            <input type="url" id="popupLink" name="link" className="popup__input popup__input_form_link" placeholder="Ссылка на картинку" value="" required defaultValue="Ссылка на картинку" />
             <span className="popupLink-error"></span>
           </fieldset>
           </>
         }
         isOpen={isAddPlacePopupOpen}
         onClose={handleClikButtunClose}
+        onChange={handleChange}
       />
       <PopupWithForm 
         title="Обновить аватар"
@@ -119,13 +118,14 @@ function App() {
         children={
           <>
           <fieldset className="popup__fieldset">
-            <input type="url" id="popupAvatar" name="link" className="popup__input popup__input_form_avatar" placeholder="Ссылка" value="" required />
+            <input type="url" id="popupAvatar" name="link" className="popup__input popup__input_form_avatar" placeholder="Ссылка" value="" required defaultValue="" />
             <span className="popupAvatar-error"></span>
           </fieldset> 
           </>
         }
         isOpen={isEditAvatarPopupOpen}
         onClose={handleClikButtunClose}
+        onChange={handleChange}
       />
 
       <ImagePopup
