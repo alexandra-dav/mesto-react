@@ -12,7 +12,7 @@ class Api {
     return res.json();
   }
   
-  // Загрузка карточек с сервера +
+  // Загрузка карточек с сервера
   getInitialCards() {
     return fetch(`${this._url}/cards`, {
       headers: this._headers
@@ -64,7 +64,7 @@ class Api {
     .then(this._getResponseData);
   }
 
-  // Удаление карточки +
+  // Удаление карточки
   deleteCard(cardId) {
     return fetch(`${this._url}/cards/${cardId}`, {
       method: 'DELETE',
@@ -72,26 +72,25 @@ class Api {
     })
     .then(this._getResponseData);
   }
-  
-  // Постановка лайка +
-  putLikeCard(cardId) {
-    return fetch(`${this._url}/cards/${cardId}/likes`, {
-      method: 'PUT',
-      headers: this._headers
-    })
-    .then(this._getResponseData);
-  }
 
-  // Снятие лайка +
-  deleteLikeCard(cardId) {
+  // поставить или удалить лайк
+  changeLikeCardStatus (cardId, flag) {
+    if(flag){
+      return fetch(`${this._url}/cards/${cardId}/likes`, {
+        method: 'PUT',
+        headers: this._headers
+      })
+      .then(this._getResponseData);
+    }
     return fetch(`${this._url}/cards/${cardId}/likes`, {
       method: 'DELETE',
       headers: this._headers
     })
     .then(this._getResponseData);
+
   }
 
-  // Загрузка информации о пользователе с сервера +
+  // Загрузка информации о пользователе с сервера
   getUserInfo() {       
     return fetch(`${this._url}/users/me`, {
         headers: this._headers
@@ -110,7 +109,7 @@ class Api {
   */
   }
 
-  // Редактирование профиля +
+  // Редактирование профиля
   patchUserInfo(UserDataProfile) {
     return fetch(`${this._url}/users/me`, {
       method: 'PATCH',
@@ -131,7 +130,7 @@ class Api {
   } */
   }
 
-    // Обновление аватара пользователя +
+    // Обновление аватара пользователя
   patchUserAvatar({ avatar }) {
     return fetch(`${this._url}/users/me/avatar`, {
       method: 'PATCH',
