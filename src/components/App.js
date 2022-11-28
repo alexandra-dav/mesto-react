@@ -6,6 +6,7 @@ import { PopupWithForm } from "./PopupWithForm";
 import { ImagePopup } from "./ImagePopup";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import { api } from "../utils/Api";
+import { EditProfilePopup } from "./EditProfilePopup";
 
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
@@ -92,15 +93,32 @@ function App() {
       .changeLikeCardStatus(card._id, !isLiked)
       .then((newCard) => {
           setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
-      });
+      })
+      .catch((err) =>
+        console.log("Ошибка: ", err, " код ошибки: ", err.status)
+      );
   }
-
   function handleCardDelete(card) {
     api
     .deleteCard(card._id)
     .then((newCard) => {
       setCards((state) => state.filter((c) => c._id !== card._id));
-    });
+    })
+    .catch((err) =>
+        console.log("Ошибка: ", err, " код ошибки: ", err.status)
+      );
+  }
+
+  function handleUpdateUser(newDataProfile){
+    api
+    .patchUserInfo(newDataProfile)
+      .then((newProfile)=> {
+        setCurrentUser(newProfile);
+        handleClosePopap();
+      })
+      .catch((err) =>
+        console.log("Ошибка: ", err, " код ошибки: ", err.status)
+      );
   }
 
   return (
@@ -127,46 +145,10 @@ function App() {
         isOpen={false}
       />
       <CurrentUserContext.Provider value={currentUser}>
-        <PopupWithForm
-          title="Редактировать профиль"
-          name="profile"
-          buttonText="Сохранить"
-          children={
-            <>
-              <fieldset className="popup__fieldset">
-                <input
-                  type="text"
-                  id="popupName"
-                  name="name"
-                  className="popup__input popup__input_form_name"
-                  placeholder="Имя"
-                  minLength="2"
-                  maxLength="40"
-                  required
-                  defaultValue="Имя"
-                  value={`${currentUser.name}`}
-                />
-                <span className="popupName-error"></span>
-              </fieldset>
-              <fieldset className="popup__fieldset">
-                <input
-                  type="text"
-                  id="popupJob"
-                  name="about"
-                  className="popup__input popup__input_form_job"
-                  placeholder="О себе"
-                  minLength="2"
-                  maxLength="200"
-                  required
-                  defaultValue="О себе"
-                  value={`${currentUser.about}`}
-                />
-                <span className="popupJob-error"></span>
-              </fieldset>
-            </>
-          }
+        <EditProfilePopup
           isOpen={isEditProfilePopupOpen}
           onClose={handleClikButtunClose}
+          onUpdateUser={handleUpdateUser}
         />
       </CurrentUserContext.Provider>
 
