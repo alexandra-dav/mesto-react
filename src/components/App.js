@@ -8,6 +8,7 @@ import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import { api } from "../utils/Api";
 import { EditProfilePopup } from "./EditProfilePopup";
 import { EditAvatarPopup } from "./EditAvatarPopup";
+import { AddPlacePopup } from "./AddPlacePopup";
 
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
@@ -102,14 +103,13 @@ function App() {
   function handleCardDelete(card) {
     api
     .deleteCard(card._id)
-    .then((newCard) => {
+    .then(() => {
       setCards((state) => state.filter((c) => c._id !== card._id));
     })
     .catch((err) =>
         console.log("Ошибка: ", err, " код ошибки: ", err.status)
       );
   }
-
   function handleUpdateUser(newDataProfile){
     api
     .patchUserInfo(newDataProfile)
@@ -120,7 +120,6 @@ function App() {
     .catch((err) =>console.log("Ошибка: ", err, " код ошибки: ", err.status)
     );
   }
-
   function handleUpdateAvatar(newLinkAvatar){
     api
     .patchUserAvatar(newLinkAvatar)
@@ -131,7 +130,19 @@ function App() {
     .catch((err) =>console.log("Ошибка: ", err, " код ошибки: ", err.status)
     );
   }
-  
+  function handleAddPlaceSubmit(newPlaceCard){
+    api
+      .postCard(newPlaceCard)
+      .then((newCard)=> {
+        console.log(newCard);
+        setCards([newCard, ...card]);
+        handleClosePopap();
+      })
+      .catch((err) =>console.log("Ошибка: ", err, " код ошибки: ", err.status)
+      );
+
+  }
+
   return (
     <>
       <Header />
@@ -167,42 +178,10 @@ function App() {
         />
       </CurrentUserContext.Provider>
 
-      <PopupWithForm
-        title="Новое место"
-        name="elements"
-        buttonText="Создать"
-        children={
-          <>
-            <fieldset className="popup__fieldset">
-              <input
-                type="text"
-                id="popupPlase"
-                name="name"
-                className="popup__input popup__input_form_plase"
-                placeholder="Название"
-                minLength="2"
-                maxLength="30"
-                required
-                defaultValue="Название"
-              />
-              <span className="popupPlase-error"></span>
-            </fieldset>
-            <fieldset className="popup__fieldset">
-              <input
-                type="url"
-                id="popupLink"
-                name="link"
-                className="popup__input popup__input_form_link"
-                placeholder="Ссылка на картинку"
-                required
-                defaultValue="Ссылка на картинку"
-              />
-              <span className="popupLink-error"></span>
-            </fieldset>
-          </>
-        }
+      <AddPlacePopup
         isOpen={isAddPlacePopupOpen}
         onClose={handleClikButtunClose}
+        AddPlacePopup={handleAddPlaceSubmit}
       />
 
       <EditAvatarPopup
