@@ -1,4 +1,4 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import { Header } from "./Header";
 import { Main } from "./Main";
 import { Footer } from "./Footer";
@@ -11,12 +11,13 @@ import { EditAvatarPopup } from "./EditAvatarPopup";
 import { AddPlacePopup } from "./AddPlacePopup";
 
 function App() {
-  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
-  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
-  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
-  const [isPhotoPopupOpen, setIsPhotoPopupOpen] = React.useState(false);
-  const [selectedCard, handleCardClick] = React.useState({});
-  const [currentUser, setCurrentUser] = React.useState({});
+  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
+  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
+  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
+  const [isPhotoPopupOpen, setIsPhotoPopupOpen] = useState(false);
+  const [selectedCard, handleCardClick] = useState({});
+  const [currentUser, setCurrentUser] = useState({});
+  const [card, setCards] = useState([]);
 
   function handleEditAvatarClick() {
     setIsEditAvatarPopupOpen(!isEditAvatarPopupOpen);
@@ -47,7 +48,7 @@ function App() {
   }
 
   // Получаем данные о пользователе
-  React.useEffect(() => {
+  useEffect(() => {
     api
       .getUserInfo()
       .then((userData) => {
@@ -57,9 +58,8 @@ function App() {
         console.log("Ошибка: ", err, " код ошибки: ", err.status)
       );
   }, []);
-
   // закрыть попапы
-  React.useEffect(() => {
+  useEffect(() => {
     function handleEscClose(e) {
       if (e.key === "Escape") {
         handleClosePopap();
@@ -71,11 +71,7 @@ function App() {
       document.removeEventListener("keydown", handleEscClose);
     };
   });
-
-  // данные о карточках
-  const [card, setCards] = React.useState([]);
-
-  React.useEffect(() => {
+  useEffect(() => {
     api
       .getInitialCards()
       .then((cardData) => {
@@ -88,13 +84,15 @@ function App() {
 
   function handleCardLike(card) {
     // Снова проверяем, есть ли уже лайк на этой карточке
-    const isLiked = card.likes.some(i => i._id === currentUser._id);
-    
+    const isLiked = card.likes.some((i) => i._id === currentUser._id);
+
     // Отправляем запрос в API и получаем обновлённые данные карточки
     api
       .changeLikeCardStatus(card._id, !isLiked)
       .then((newCard) => {
-          setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
+        setCards((state) =>
+          state.map((c) => (c._id === card._id ? newCard : c))
+        );
       })
       .catch((err) =>
         console.log("Ошибка: ", err, " код ошибки: ", err.status)
@@ -102,45 +100,47 @@ function App() {
   }
   function handleCardDelete(card) {
     api
-    .deleteCard(card._id)
-    .then(() => {
-      setCards((state) => state.filter((c) => c._id !== card._id));
-    })
-    .catch((err) =>
+      .deleteCard(card._id)
+      .then(() => {
+        setCards((state) => state.filter((c) => c._id !== card._id));
+      })
+      .catch((err) =>
         console.log("Ошибка: ", err, " код ошибки: ", err.status)
       );
   }
-  function handleUpdateUser(newDataProfile){
+  function handleUpdateUser(newDataProfile) {
     api
-    .patchUserInfo(newDataProfile)
-    .then((newProfile)=> {
-      setCurrentUser(newProfile);
-      handleClosePopap();
-    })
-    .catch((err) =>console.log("Ошибка: ", err, " код ошибки: ", err.status)
-    );
+      .patchUserInfo(newDataProfile)
+      .then((newProfile) => {
+        setCurrentUser(newProfile);
+        handleClosePopap();
+      })
+      .catch((err) =>
+        console.log("Ошибка: ", err, " код ошибки: ", err.status)
+      );
   }
-  function handleUpdateAvatar(newLinkAvatar){
+  function handleUpdateAvatar(newLinkAvatar) {
     api
-    .patchUserAvatar(newLinkAvatar)
-    .then((newProfile)=> {
-      setCurrentUser(newProfile);
-      handleClosePopap();
-    })
-    .catch((err) =>console.log("Ошибка: ", err, " код ошибки: ", err.status)
-    );
+      .patchUserAvatar(newLinkAvatar)
+      .then((newProfile) => {
+        setCurrentUser(newProfile);
+        handleClosePopap();
+      })
+      .catch((err) =>
+        console.log("Ошибка: ", err, " код ошибки: ", err.status)
+      );
   }
-  function handleAddPlaceSubmit(newPlaceCard){
+  function handleAddPlaceSubmit(newPlaceCard) {
     api
       .postCard(newPlaceCard)
-      .then((newCard)=> {
+      .then((newCard) => {
         console.log(newCard);
         setCards([newCard, ...card]);
         handleClosePopap();
       })
-      .catch((err) =>console.log("Ошибка: ", err, " код ошибки: ", err.status)
+      .catch((err) =>
+        console.log("Ошибка: ", err, " код ошибки: ", err.status)
       );
-
   }
 
   return (
@@ -189,7 +189,7 @@ function App() {
         onClose={handleClikButtunClose}
         onUpdateAvatar={handleUpdateAvatar}
       />
-      
+
       <ImagePopup
         card={selectedCard}
         isOpen={isPhotoPopupOpen}

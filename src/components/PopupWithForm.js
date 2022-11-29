@@ -1,10 +1,6 @@
 import React from "react";
 
 export function PopupWithForm(props) {
-  // props -> name, title, isOpen, onSubmit
-/*   const modififkator = props.isOpen
-    ? `popup popup_${props.name} popup_opened`
-    : `popup popup_${props.name}`; */
   return (
     <div className={`popup popup__${props.name} ${props.isOpen && "popup_opened"}`} id={`${props.name}`}>
       <div className="popup__content">

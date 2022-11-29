@@ -1,8 +1,8 @@
-import React from "react";
+import { createRef } from "react";
 import { PopupWithForm } from "./PopupWithForm";
 
 export function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
-  var urlInput = React.createRef();
+  var urlInput = createRef();
   function handleSubmit(e) {
     e.preventDefault();
     onUpdateAvatar({

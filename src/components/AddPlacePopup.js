@@ -1,9 +1,9 @@
-import React from "react";
+import { createRef } from "react";
 import { PopupWithForm } from "./PopupWithForm";
 
 export function AddPlacePopup({ isOpen, onClose, AddPlacePopup }) {
-  var textInput = React.createRef();
-  var urlInput = React.createRef();
+  var textInput = createRef();
+  var urlInput = createRef();
   function handleSubmit(e) {
     e.preventDefault();
     AddPlacePopup({
