@@ -7,6 +7,7 @@ import { ImagePopup } from "./ImagePopup";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import { api } from "../utils/Api";
 import { EditProfilePopup } from "./EditProfilePopup";
+import { EditAvatarPopup } from "./EditAvatarPopup";
 
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
@@ -112,18 +113,29 @@ function App() {
   function handleUpdateUser(newDataProfile){
     api
     .patchUserInfo(newDataProfile)
-      .then((newProfile)=> {
-        setCurrentUser(newProfile);
-        handleClosePopap();
-      })
-      .catch((err) =>
-        console.log("Ошибка: ", err, " код ошибки: ", err.status)
-      );
+    .then((newProfile)=> {
+      setCurrentUser(newProfile);
+      handleClosePopap();
+    })
+    .catch((err) =>console.log("Ошибка: ", err, " код ошибки: ", err.status)
+    );
   }
 
+  function handleUpdateAvatar(newLinkAvatar){
+    api
+    .patchUserAvatar(newLinkAvatar)
+    .then((newProfile)=> {
+      setCurrentUser(newProfile);
+      handleClosePopap();
+    })
+    .catch((err) =>console.log("Ошибка: ", err, " код ошибки: ", err.status)
+    );
+  }
+  
   return (
     <>
       <Header />
+
       <Main
         card={card}
         you={currentUser._id}
@@ -137,13 +149,16 @@ function App() {
         onAddPlace={handleAddPlaceClick}
         onEditAvatar={handleEditAvatarClick}
       />
+
       <Footer />
+
       <PopupWithForm
         title="Вы уверены?"
         name="delete-card"
         buttonText="Да"
         isOpen={false}
       />
+
       <CurrentUserContext.Provider value={currentUser}>
         <EditProfilePopup
           isOpen={isEditProfilePopupOpen}
@@ -189,30 +204,13 @@ function App() {
         isOpen={isAddPlacePopupOpen}
         onClose={handleClikButtunClose}
       />
-      <PopupWithForm
-        title="Обновить аватар"
-        name="avatar"
-        buttonText="Сохранить"
-        children={
-          <>
-            <fieldset className="popup__fieldset">
-              <input
-                type="url"
-                id="popupAvatar"
-                name="link"
-                className="popup__input popup__input_form_avatar"
-                placeholder="Ссылка"
-                required
-                defaultValue=""
-              />
-              <span className="popupAvatar-error"></span>
-            </fieldset>
-          </>
-        }
+
+      <EditAvatarPopup
         isOpen={isEditAvatarPopupOpen}
         onClose={handleClikButtunClose}
+        onUpdateAvatar={handleUpdateAvatar}
       />
-
+      
       <ImagePopup
         card={selectedCard}
         isOpen={isPhotoPopupOpen}
