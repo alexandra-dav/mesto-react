@@ -149,7 +149,7 @@ function App() {
 
       <Main
         card={card}
-        you={currentUser._id}
+        userData={currentUser._id}
         onCardLike={handleCardLike}
         onCardDelete={handleCardDelete}
         onCardClick={handleOpenPhotoClick}

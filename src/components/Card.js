@@ -1,16 +1,16 @@
 export function Card({
   key,
   card,
-  you,
+  userData,
   onCardDelete,
   onCardClick,
   onCardLike
 }) {
   const ownerCard = card.owner;
   // Определяем, являемся ли мы владельцем текущей карточки
-  const isOwn = ownerCard._id === you;
+  const isOwn = ownerCard._id === userData;
   // Определяем, есть ли у карточки лайк, поставленный текущим пользователем
-  const isLiked = card.likes.some(i => i._id === you);
+  const isLiked = card.likes.some(i => i._id === userData);
   
   return (
     <article className="elements__container" key={key}>

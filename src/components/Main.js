@@ -40,7 +40,7 @@ export function Main(props) {
           <Card
             key={cardData._id}
             card={cardData}
-            you={props.you}
+            userData={props.userData}
             onCardDelete={() => {
               props.onCardDelete(cardData);
             }}
