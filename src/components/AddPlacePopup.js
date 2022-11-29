@@ -1,16 +1,26 @@
-import { createRef } from "react";
+import { useState, useEffect } from "react";
 import { PopupWithForm } from "./PopupWithForm";
 
 export function AddPlacePopup({ isOpen, onClose, AddPlacePopup }) {
-  var textInput = createRef();
-  var urlInput = createRef();
+  const [nameInput, setName] = useState('');
+  const [linkInput, setLink] = useState('');
   function handleSubmit(e) {
     e.preventDefault();
     AddPlacePopup({
-      name: textInput.value,
-      link: urlInput.value
+      name: nameInput,
+      link: linkInput
     });
   }
+  function handleName(e){
+    setName(e.target.value);
+  }
+  function handleLink(e){
+    setLink(e.target.value);
+  }
+  useEffect(() => {
+    setName('');
+    setLink('');
+  }, [isOpen]);
 
   return (
     <PopupWithForm
@@ -22,7 +32,8 @@ export function AddPlacePopup({ isOpen, onClose, AddPlacePopup }) {
           <fieldset className="popup__fieldset">
             <input
               type="text"
-              ref={(input) => { textInput = input; }}
+              value={nameInput}
+              onChange={handleName}
               id="popupPlase"
               name="name"
               className="popup__input popup__input_form_plase"
@@ -36,7 +47,8 @@ export function AddPlacePopup({ isOpen, onClose, AddPlacePopup }) {
           <fieldset className="popup__fieldset">
             <input
               type="url"
-              ref={(input) => { urlInput = input; }}
+              value={linkInput}
+              onChange={handleLink}
               id="popupLink"
               name="link"
               className="popup__input popup__input_form_link"
