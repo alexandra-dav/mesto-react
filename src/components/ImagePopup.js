@@ -1,8 +1,7 @@
-export function ImagePopup(props) {
-  // card, onClose, {link: card.link, name: card.name}
+export function ImagePopup({ card, isOpen, onClose }) {
   return (
     <div
-      className={`popup popup_photo ${props.isOpen ? "popup_opened" : ""}`}
+      className={`popup popup_photo ${isOpen ? "popup_opened" : ""}`}
       id="view_photo"
     >
       <div className="photo">
@@ -10,15 +9,15 @@ export function ImagePopup(props) {
           aria-label="close"
           className="popup__close popup__close_window_photo"
           type="button"
-          onMouseDown={props.onClose}
+          onMouseDown={onClose}
         ></button>
         <figure className="photo__figure">
           <img
-            src={props.card.link}
+            src={card.link}
             className="photo__image"
-            alt={`${props.card.name}`}
+            alt={`${card.name}`}
           />
-          <figcaption className="photo__caption">{`${props.card.name}`}</figcaption>
+          <figcaption className="photo__caption">{`${card.name}`}</figcaption>
         </figure>
       </div>
     </div>
