@@ -22,7 +22,7 @@ function App() {
   const [selectedCard, handleCardClick] = useState({});
   const [currentUser, setCurrentUser] = useState({});
   const [card, setCards] = useState([]);
-  const [loggedIn, changeLogin] = useState(true);
+  const [loggedIn, changeLogin] = useState(false);
 
   function handleEditAvatarClick() {
     setIsEditAvatarPopupOpen(!isEditAvatarPopupOpen);
@@ -159,7 +159,7 @@ function App() {
 
           <Switch>
             <Route path="/sing-in">
-              <Login isOpen={true} />
+              <Login />
             </Route>
             <Route path="/sing-up">
               <Register></Register>
@@ -178,7 +178,7 @@ function App() {
             />
           </Switch>
 
-          <Footer />
+          {loggedIn && <Footer />}
           <PopupWithForm
             title="Вы уверены?"
             name="delete-card"
