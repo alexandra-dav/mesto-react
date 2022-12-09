@@ -2,41 +2,41 @@ import React from "react";
 
 export function Login() {
   return (
-    <div className="log-in">
-      <h2 className="log-in__title">Вход</h2>
+    <div className="register">
+      <h2 className="register__title">Вход</h2>
       <form
         name="login-form"
-        className="log-in__form"
+        className="register__form"
         /* onSubmit={props.onSubmit} */
       >
-        <fieldset className="log-in__fieldset">
+        <fieldset className="register__fieldset">
             <input
               type="text"
               id="loginEmail"
               name="email"
-              className="log-in__input log-in__input_form_email"
+              className="register__input register__input_form_email"
               placeholder="Email"
               minLength="2"
               maxLength="40"
               required
             />
-            <span className="popupName-error"></span>
+            <span className="loginEmail-error"></span>
           </fieldset>
-          <fieldset className="log-in__fieldset">
+          <fieldset className="register__fieldset">
             <input
               type="text"
               id="loginPass"
               name="pass"
-              className="log-in__input log-in__input_form_pass"
+              className="register__input register__input_form_pass"
               placeholder="Пароль"
               minLength="2"
               maxLength="200"
               required
             />
-            <span className="popupJob-error"></span>
+            <span className="loginName-error"></span>
           </fieldset>
 
-        <button aria-label="submit" className="log-in__button" type="submit">
+        <button aria-label="submit" className="register__button" type="submit">
           Войти
         </button>
       </form>

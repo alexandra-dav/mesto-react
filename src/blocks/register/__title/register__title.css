@@ -1,4 +1,4 @@
-.log-in__title {
+.register__title {
     font-style: normal;
     font-weight: 900;
     font-size: 24px;
@@ -8,7 +8,7 @@
 }
 
 @media screen and (max-width: 767px) {
-    .log-in__title {
+    .register__title {
         font-size: 18px;
         line-height: 22px;
         margin-bottom: 40px;

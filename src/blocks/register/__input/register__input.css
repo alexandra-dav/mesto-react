@@ -1,4 +1,4 @@
-.log-in__input {
+.register__input {
   border: none;
   border-bottom: 2px solid #cccccc;
   width: 358px;
@@ -13,12 +13,12 @@
   background-color: black;
 }
 
-.log-in__input:focus-visible {
+.register__input:focus-visible {
   border-bottom: 2px solid rgb(92, 174, 207);
 }
 
 @media screen and (max-width: 767px) {
-  .log-in__input {
+  .register__input {
     width: 238px;
   }
 }

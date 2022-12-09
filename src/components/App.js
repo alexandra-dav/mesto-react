@@ -162,7 +162,7 @@ function App() {
               <Login />
             </Route>
             <Route path="/sing-up">
-              <Register></Register>
+              <Register />
             </Route>
             <ProtectedRoute
               path="/"

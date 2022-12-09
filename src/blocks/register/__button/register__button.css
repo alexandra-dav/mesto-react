@@ -1,4 +1,4 @@
-.log-in__button {
+.register__button {
   width: 358px;
   height: 50px;
   color: rgba(0, 0, 0, 1);
@@ -12,14 +12,14 @@
   border: 0;
 }
 
-.log-in__button:hover {
+.register__button:hover {
     opacity: 0.8;
     transition: 0.5s;
     cursor: pointer;
 }
 
 @media screen and (max-width: 767px) {
-    .log-in__button {
+    .register__button {
         width: 238px;
         height: 46px;
         font-size: 14px;
