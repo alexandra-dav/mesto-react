@@ -6,8 +6,8 @@ export function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
   // Подписка на контекст
   const currentUser = useContext(CurrentUserContext);
 
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
 
   // После загрузки текущего пользователя из API
   // его данные будут использованы в управляемых компонентах.
@@ -25,7 +25,7 @@ export function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
   function handleSubmit(e) {
     // Запрещаем браузеру переходить по адресу формы
     e.preventDefault();
-  
+
     // Передаём значения управляемых компонентов во внешний обработчик
     onUpdateUser({
       name,
@@ -51,7 +51,7 @@ export function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
               maxLength="40"
               required
               onChange={handleChangeName}
-              value={name || ''}
+              value={name || ""}
             />
             <span className="popupName-error"></span>
           </fieldset>
@@ -66,7 +66,7 @@ export function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
               maxLength="200"
               required
               onChange={handleChangeDescription}
-              value={description || ''}
+              value={description || ""}
             />
             <span className="popupJob-error"></span>
           </fieldset>

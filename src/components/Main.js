@@ -1,7 +1,9 @@
-import React from "react";
+import { useContext } from "react";
 import { Card } from "./Card";
+import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
 export function Main(props) {
+  const currentUser = useContext(CurrentUserContext);
   return (
     <main className="main">
       <section className="profile">
@@ -14,19 +16,19 @@ export function Main(props) {
           ></button>
           <img
             className="profile__image"
-            src={`${props.avatar}`}
+            src={`${currentUser.avatar}`}
             alt="Аватар пользователя"
           />
         </div>
         <form className="profile__info" name="profileInfo">
-          <h1 className="profile__name">{`${props.name}`}</h1>
+          <h1 className="profile__name">{`${currentUser.name}`}</h1>
           <button
             aria-label="edit-profile"
             className="profile__edit-name"
             type="button"
             onClick={props.onEditProfile}
           ></button>
-          <p className="profile__occupation">{`${props.about}`}</p>
+          <p className="profile__occupation">{`${currentUser.about}`}</p>
         </form>
         <button
           aria-label="add-content"
@@ -40,7 +42,6 @@ export function Main(props) {
           <Card
             key={cardData._id}
             card={cardData}
-            userData={props.userData}
             onCardDelete={() => {
               props.onCardDelete(cardData);
             }}

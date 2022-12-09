@@ -2,18 +2,18 @@ import { useState, useEffect } from "react";
 import { PopupWithForm } from "./PopupWithForm";
 
 export function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
-  const [avatarInput, setAvatar] = useState('');
+  const [avatarInput, setAvatar] = useState("");
   function handleSubmit(e) {
     e.preventDefault();
     onUpdateAvatar({
       avatar: avatarInput,
     });
   }
-  function handleAvatar(e){
+  function handleAvatar(e) {
     setAvatar(e.target.value);
   }
   useEffect(() => {
-    setAvatar('');
+    setAvatar("");
   }, [isOpen]);
 
   return (

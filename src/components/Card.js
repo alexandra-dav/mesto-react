@@ -1,16 +1,19 @@
+import { useContext } from "react";
+import { CurrentUserContext } from "../contexts/CurrentUserContext";
+
 export function Card({
   key,
   card,
-  userData,
   onCardDelete,
   onCardClick,
   onCardLike
 }) {
+  const currentUser = useContext(CurrentUserContext);
   const ownerCard = card.owner;
   // Определяем, являемся ли мы владельцем текущей карточки
-  const isOwn = ownerCard._id === userData;
+  const isOwn = ownerCard._id === currentUser._id;
   // Определяем, есть ли у карточки лайк, поставленный текущим пользователем
-  const isLiked = card.likes.some(i => i._id === userData);
+  const isLiked = card.likes.some(i => i._id === currentUser._id);
   
   return (
     <article className="elements__container" key={key}>

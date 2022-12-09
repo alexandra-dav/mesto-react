@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Route, Switch, BrowserRouter } from "react-router-dom";
 import { Header } from "./Header";
 import { Main } from "./Main";
 import { Footer } from "./Footer";
@@ -9,6 +10,9 @@ import { api } from "../utils/Api";
 import { EditProfilePopup } from "./EditProfilePopup";
 import { EditAvatarPopup } from "./EditAvatarPopup";
 import { AddPlacePopup } from "./AddPlacePopup";
+import { Login } from "./Login";
+import { Register } from "./Register";
+import ProtectedRoute from "./ProtectedRoute";
 
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
@@ -18,6 +22,7 @@ function App() {
   const [selectedCard, handleCardClick] = useState({});
   const [currentUser, setCurrentUser] = useState({});
   const [card, setCards] = useState([]);
+  const [loggedIn, changeLogin] = useState(true);
 
   function handleEditAvatarClick() {
     setIsEditAvatarPopupOpen(!isEditAvatarPopupOpen);
@@ -45,6 +50,9 @@ function App() {
     ) {
       handleClosePopap();
     }
+  }
+  function handleLogin() {
+    changeLogin(!loggedIn);
   }
 
   // Получаем данные о пользователе
@@ -145,56 +153,64 @@ function App() {
 
   return (
     <>
-      <Header />
+      <BrowserRouter>
+        <CurrentUserContext.Provider value={currentUser}>
+          <Header />
 
-      <Main
-        card={card}
-        userData={currentUser._id}
-        onCardLike={handleCardLike}
-        onCardDelete={handleCardDelete}
-        onCardClick={handleOpenPhotoClick}
-        name={currentUser.name}
-        about={currentUser.about}
-        avatar={currentUser.avatar}
-        onEditProfile={handleEditProfileClick}
-        onAddPlace={handleAddPlaceClick}
-        onEditAvatar={handleEditAvatarClick}
-      />
+          <Switch>
+            <Route path="/sing-in">
+              <Login isOpen={true} />
+            </Route>
+            <Route path="/sing-up">
+              <Register></Register>
+            </Route>
+            <ProtectedRoute
+              path="/"
+              loggedIn={loggedIn}
+              component={Main}
+              card={card}
+              onCardLike={handleCardLike}
+              onCardDelete={handleCardDelete}
+              onCardClick={handleOpenPhotoClick}
+              onEditProfile={handleEditProfileClick}
+              onAddPlace={handleAddPlaceClick}
+              onEditAvatar={handleEditAvatarClick}
+            />
+          </Switch>
 
-      <Footer />
+          <Footer />
+          <PopupWithForm
+            title="Вы уверены?"
+            name="delete-card"
+            buttonText="Да"
+            isOpen={false}
+          />
 
-      <PopupWithForm
-        title="Вы уверены?"
-        name="delete-card"
-        buttonText="Да"
-        isOpen={false}
-      />
+          <EditProfilePopup
+            isOpen={isEditProfilePopupOpen}
+            onClose={handleClikButtunClose}
+            onUpdateUser={handleUpdateUser}
+          />
 
-      <CurrentUserContext.Provider value={currentUser}>
-        <EditProfilePopup
-          isOpen={isEditProfilePopupOpen}
-          onClose={handleClikButtunClose}
-          onUpdateUser={handleUpdateUser}
-        />
-      </CurrentUserContext.Provider>
+          <AddPlacePopup
+            isOpen={isAddPlacePopupOpen}
+            onClose={handleClikButtunClose}
+            AddPlacePopup={handleAddPlaceSubmit}
+          />
 
-      <AddPlacePopup
-        isOpen={isAddPlacePopupOpen}
-        onClose={handleClikButtunClose}
-        AddPlacePopup={handleAddPlaceSubmit}
-      />
+          <EditAvatarPopup
+            isOpen={isEditAvatarPopupOpen}
+            onClose={handleClikButtunClose}
+            onUpdateAvatar={handleUpdateAvatar}
+          />
 
-      <EditAvatarPopup
-        isOpen={isEditAvatarPopupOpen}
-        onClose={handleClikButtunClose}
-        onUpdateAvatar={handleUpdateAvatar}
-      />
-
-      <ImagePopup
-        card={selectedCard}
-        isOpen={isPhotoPopupOpen}
-        onClose={handleClikButtunClose}
-      />
+          <ImagePopup
+            card={selectedCard}
+            isOpen={isPhotoPopupOpen}
+            onClose={handleClikButtunClose}
+          />
+        </CurrentUserContext.Provider>
+      </BrowserRouter>
     </>
   );
 }
