@@ -1,6 +1,6 @@
 import React from "react";
 
-export function Login() {
+export default function Login() {
   return (
     <div className="register">
       <h2 className="register__title">Вход</h2>
@@ -33,7 +33,7 @@ export function Login() {
               maxLength="200"
               required
             />
-            <span className="loginName-error"></span>
+            <span className="loginPass-error"></span>
           </fieldset>
 
         <button aria-label="submit" className="register__button" type="submit">

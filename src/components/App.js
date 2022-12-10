@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Route, Switch, BrowserRouter } from "react-router-dom";
+import { Route, Switch, BrowserRouter, withRouter } from "react-router-dom";
 import { Header } from "./Header";
 import { Main } from "./Main";
 import { Footer } from "./Footer";
@@ -10,9 +10,10 @@ import { api } from "../utils/Api";
 import { EditProfilePopup } from "./EditProfilePopup";
 import { EditAvatarPopup } from "./EditAvatarPopup";
 import { AddPlacePopup } from "./AddPlacePopup";
-import { Login } from "./Login";
-import { Register } from "./Register";
 import ProtectedRoute from "./ProtectedRoute";
+import Login from "./Login";
+import Register from "./Register";
+
 
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
@@ -153,14 +154,16 @@ function App() {
 
   return (
     <>
-      <BrowserRouter>
+      
         <CurrentUserContext.Provider value={currentUser}>
+        <BrowserRouter>
           <Header />
 
           <Switch>
             <Route path="/sing-in">
-              <Login />
+            <Login />
             </Route>
+            
             <Route path="/sing-up">
               <Register />
             </Route>
@@ -209,8 +212,9 @@ function App() {
             isOpen={isPhotoPopupOpen}
             onClose={handleClikButtunClose}
           />
+          </BrowserRouter>
         </CurrentUserContext.Provider>
-      </BrowserRouter>
+      
     </>
   );
 }
