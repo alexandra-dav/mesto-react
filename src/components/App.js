@@ -24,8 +24,9 @@ function App() {
   const [isInfoTooltipOpen, setInfoTooltipOpen] = useState(false);
   const [selectedCard, handleCardClick] = useState({});
   const [currentUser, setCurrentUser] = useState({});
+  const [userEmail, setUserEmail] = useState('');
   const [card, setCards] = useState([]);
-  const [loggedIn, changeLogin] = useState(false);
+  const [loggedIn, isLoggedIn] = useState(false);
   const [isRegisterSuccess, setIsRegisterSuccess] = useState(true);
   const history = useHistory();
 
@@ -57,8 +58,10 @@ function App() {
       handleClosePopap();
     }
   }
-  function handleLogin() {
-    changeLogin(!loggedIn);
+  function handleLogOut() {
+    isLoggedIn(false);
+    setUserEmail('');
+    localStorage.removeItem('jwt');
   }
 
   // Получаем данные о пользователе
@@ -158,9 +161,7 @@ function App() {
   }
 
   function handleRegisterUser(data) {
-    console.log(data);
     auth.register(data).then((res) => {
-      console.log(res);
       if (res.statusCode !== 400) {
         setIsRegisterSuccess(true);
         setInfoTooltipOpen(true);
@@ -172,14 +173,32 @@ function App() {
       }
     });
   }
+  function handleAuthorize(data) {
+    console.log(data);
+    auth.authorize(data).then((res) => {
+      console.log(res);
+      if (res.token) {
+        setIsRegisterSuccess(true);
+        setInfoTooltipOpen(true);
+        localStorage.setItem('jwt', res.token);
+        isLoggedIn(true);
+        setUserEmail(data.email);
+        history.push('/');
+      } else {
+        setIsRegisterSuccess(false);
+        setInfoTooltipOpen(true);
+      }
+    });
+  }
+
   return (
     <>
       <CurrentUserContext.Provider value={currentUser}>
-        <Header onLogOut={handleLogin} />
+        <Header onLogOut={handleLogOut} email={userEmail} />
 
         <Switch>
           <Route path="/sing-in">
-            <Login />
+            <Login onAuthorize={handleAuthorize} />
           </Route>
 
           <Route path="/sing-up">

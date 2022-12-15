@@ -30,7 +30,7 @@ function Register({onRegister}) {
       >
         <fieldset className="register__fieldset">
           <input
-            type="text"
+            type="email"
             id="loginEmail"
             name="email"
             className="register__input register__input_form_email"

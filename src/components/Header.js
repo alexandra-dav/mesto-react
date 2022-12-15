@@ -6,7 +6,7 @@ export function Header(props) {
     <header className="header">
       <img src={logo} alt="Логотип" className="header__logo" />
       <div className="header__info">
-        <p className="header__email">email</p>
+        <p className="header__email">{`${props.email}`}</p>
         <Switch>
           <Route path="/sing-in">
             <Link to="/sing-up" className="header__link">

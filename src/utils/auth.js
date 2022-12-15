@@ -25,23 +25,28 @@ export const register = (data) => {
 } */
 
 // Авторизация в сервисе 
-export const authorize = (password, email) => {
+export const authorize = (data) => {
   return fetch(`${BASE_URL}/signin`, {
     method: "POST",
     headers: {
       'Accept': 'application/json',
       "Content-Type": "application/json"
     },
-    body: JSON.stringify({ password, email }),
+    body: JSON.stringify(data),
   })
-    .then((response) => response.json())
+/*     .then((response) => response.json())
     .then((data) => {
       if (data.user) {
         localStorage.setItem("jwt", data.jwt);
         return data;
       }
-    })
-    .catch((err) => console.log(err));
+    }) */
+    .then((res) => {
+      if (res.ok) {
+        return res.json();
+      }
+      return Promise.reject(`Ошибка: ${res.status}`);
+    });
 };
 /* Успешный ответ
 {
