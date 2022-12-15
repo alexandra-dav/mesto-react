@@ -75,7 +75,7 @@ export const userEmail = (jwt) => {
     "email":"email@email.ru"
 } */
 
-/* export const checkToken = (token) => {
+export const checkToken = (token) => {
   return fetch(`${BASE_URL}/users/me`, {
     method: 'GET',
     headers: {
@@ -86,4 +86,4 @@ export const userEmail = (jwt) => {
   })
   .then(res => res.json())
   .then(data => data)
-} */
+}

@@ -33,7 +33,6 @@ export function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
               className="popup__input popup__input_form_avatar"
               placeholder="Ссылка"
               required
-              defaultValue=""
             />
             <span className="popupAvatar-error"></span>
           </fieldset>

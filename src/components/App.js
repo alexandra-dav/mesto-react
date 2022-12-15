@@ -174,9 +174,7 @@ function App() {
     });
   }
   function handleAuthorize(data) {
-    console.log(data);
     auth.authorize(data).then((res) => {
-      console.log(res);
       if (res.token) {
         setIsRegisterSuccess(true);
         setInfoTooltipOpen(true);
@@ -184,12 +182,27 @@ function App() {
         isLoggedIn(true);
         setUserEmail(data.email);
         history.push('/');
-      } else {
-        setIsRegisterSuccess(false);
-        setInfoTooltipOpen(true);
       }
+    })
+    .catch(err => {
+      console.log(err);
+      setIsRegisterSuccess(false);
+      setInfoTooltipOpen(true);
     });
   }
+  useEffect(() => {
+    if(localStorage.getItem('jwt')){
+      const jwt = localStorage.getItem('jwt');
+      auth.checkToken(jwt)
+        .then((res) => {
+          if (res){
+            isLoggedIn(true);
+            setUserEmail(res.data.email);
+            history.push('/');
+          }
+        });
+    }
+  }, [loggedIn, userEmail, history]);
 
   return (
     <>
