@@ -3,11 +3,4 @@
   font-size: 14px;
   text-align: center;
   color: rgba(255, 255, 255, 1);
-  text-decoration: none;
-}
-
-.register__link:hover {
-  opacity: 0.6;
-  transition: 0.5s;
-  cursor: pointer;
 }
