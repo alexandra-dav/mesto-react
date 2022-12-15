@@ -11,6 +11,7 @@
   padding: 2px 0 13px;
   margin: 0;
   background-color: black;
+  color: #FFFFFF;
 }
 
 .register__input:focus-visible {

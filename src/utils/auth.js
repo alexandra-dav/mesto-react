@@ -1,21 +1,20 @@
 export const BASE_URL = "https://auth.nomoreparties.co";
 
 // Регистрация
-export const register = (password, email) => {
+export const register = (data) => {
   return fetch(`${BASE_URL}/signup`, {
     method: "POST",
     headers: {
-      "Content-Type": "application/json",
+      "Content-Type": "application/json"
     },
-    body: JSON.stringify({ password, email }),
+    body: JSON.stringify(data),
   })
-    .then((response) => {
-      return response.json();
-    })
     .then((res) => {
-      return res;
-    })
-    .catch((err) => console.log(err));
+      if (res.ok) {
+        return res.json();
+      }
+      return Promise.reject(`Ошибка: ${res.status}`);
+    });
 };
 /* Успешный ответ
   {
@@ -30,6 +29,7 @@ export const authorize = (password, email) => {
   return fetch(`${BASE_URL}/signin`, {
     method: "POST",
     headers: {
+      'Accept': 'application/json',
       "Content-Type": "application/json"
     },
     body: JSON.stringify({ password, email }),
@@ -53,17 +53,16 @@ export const userEmail = (jwt) => {
     return fetch(`${BASE_URL}/users/me`, {
       method: "GET",
       headers: {
+        'Accept': 'application/json',
         "Content-Type": "application/json",
         "Authorization" : `Bearer ${jwt}`
       }
     })
-      .then((response) => {
-        return response.json();
-      })
       .then((res) => {
-        return res;
-      })
-      .catch((err) => console.log(err));
+        res.ok ? 
+          res.json() : 
+          Promise.reject(`Ошибка: ${res.status}`)
+      });
   };
 /* Успешный ответ
 {

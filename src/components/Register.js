@@ -1,14 +1,44 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import * as auth from "../utils/auth.js";
 
-function Register() {
+function Register({onRegister}) {
+  const [data, setData] = useState({
+    email: '',
+    password: ''
+  });
+  const handlChange = (e) => {
+    const {name, value} = e.target;
+    setData({
+      ...data,
+      [name]: value,
+    });
+  }
+  const handlSubmit = (e) => {
+    e.preventDefault();
+    let { password, email } = data;
+/*     
+    auth.register({password, email}).then((res) => {
+      console.log(res);
+      if (res.statusCode !== 400) {
+        console.log('Ошибка не 400, возможно нет ошибки :)');
+        history.push('/sing-in');
+      } else {
+        console.log('Ошибка все же 400');
+      }
+    }); */
+    onRegister({password, email});
+    
+  }
+
   return (
     <div className="register">
       <h2 className="register__title">Регистрация</h2>
       <form
         name="login-form"
         className="register__form"
-        /* onSubmit={props.onSubmit} */
+        onSubmit={handlSubmit}
       >
         <fieldset className="register__fieldset">
           <input
@@ -20,19 +50,23 @@ function Register() {
             minLength="2"
             maxLength="40"
             required
+            value={data.email}
+            onChange={handlChange}
           />
           <span className="registerEmail-error"></span>
         </fieldset>
         <fieldset className="register__fieldset">
           <input
-            type="text"
-            id="loginPass"
-            name="pass"
+            type="password"
+            id="loginPassword"
+            name="password"
             className="register__input register__input_form_pass"
             placeholder="Пароль"
             minLength="2"
             maxLength="200"
             required
+            value={data.password}
+            onChange={handlChange}
           />
           <span className="registerName-error"></span>
         </fieldset>

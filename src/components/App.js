@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import * as auth from "../utils/auth.js";
-import { Route, Switch, BrowserRouter } from "react-router-dom";
+import { Route, Switch, useHistory } from "react-router-dom";
 import { Header } from "./Header";
 import { Main } from "./Main";
 import { Footer } from "./Footer";
@@ -26,6 +26,8 @@ function App() {
   const [currentUser, setCurrentUser] = useState({});
   const [card, setCards] = useState([]);
   const [loggedIn, changeLogin] = useState(false);
+  const [isRegisterSuccess, setIsRegisterSuccess] = useState(true);
+  const history = useHistory();
 
   function handleEditAvatarClick() {
     setIsEditAvatarPopupOpen(!isEditAvatarPopupOpen);
@@ -155,74 +157,85 @@ function App() {
       );
   }
 
+  function handleRegisterUser(data) {
+    console.log(data);
+    auth.register(data).then((res) => {
+      console.log(res);
+      if (res.statusCode !== 400) {
+        setIsRegisterSuccess(true);
+        setInfoTooltipOpen(true);
+        console.log(isRegisterSuccess);
+        history.push('/sing-in');
+      } else {
+        setIsRegisterSuccess(false);
+        setInfoTooltipOpen(true);
+      }
+    });
+  }
   return (
     <>
       <CurrentUserContext.Provider value={currentUser}>
-        <BrowserRouter>
-          <Header
-            onLogOut={handleLogin}
+        <Header onLogOut={handleLogin} />
+
+        <Switch>
+          <Route path="/sing-in">
+            <Login />
+          </Route>
+
+          <Route path="/sing-up">
+            <Register onRegister={handleRegisterUser} />
+          </Route>
+          <ProtectedRoute
+            path="/"
+            loggedIn={loggedIn}
+            component={Main}
+            card={card}
+            onCardLike={handleCardLike}
+            onCardDelete={handleCardDelete}
+            onCardClick={handleOpenPhotoClick}
+            onEditProfile={handleEditProfileClick}
+            onAddPlace={handleAddPlaceClick}
+            onEditAvatar={handleEditAvatarClick}
           />
+        </Switch>
 
-          <Switch>
-            <Route path="/sing-in">
-              <Login />
-            </Route>
+        {loggedIn && <Footer />}
+        <PopupWithForm
+          title="Вы уверены?"
+          name="delete-card"
+          buttonText="Да"
+          isOpen={false}
+        />
 
-            <Route path="/sing-up">
-              <Register />
-            </Route>
-            <ProtectedRoute
-              path="/"
-              loggedIn={loggedIn}
-              component={Main}
-              card={card}
-              onCardLike={handleCardLike}
-              onCardDelete={handleCardDelete}
-              onCardClick={handleOpenPhotoClick}
-              onEditProfile={handleEditProfileClick}
-              onAddPlace={handleAddPlaceClick}
-              onEditAvatar={handleEditAvatarClick}
-            />
-          </Switch>
+        <EditProfilePopup
+          isOpen={isEditProfilePopupOpen}
+          onClose={handleClikButtunClose}
+          onUpdateUser={handleUpdateUser}
+        />
 
-          {loggedIn && <Footer />}
-          <PopupWithForm
-            title="Вы уверены?"
-            name="delete-card"
-            buttonText="Да"
-            isOpen={false}
-          />
+        <AddPlacePopup
+          isOpen={isAddPlacePopupOpen}
+          onClose={handleClikButtunClose}
+          AddPlacePopup={handleAddPlaceSubmit}
+        />
 
-          <EditProfilePopup
-            isOpen={isEditProfilePopupOpen}
-            onClose={handleClikButtunClose}
-            onUpdateUser={handleUpdateUser}
-          />
+        <EditAvatarPopup
+          isOpen={isEditAvatarPopupOpen}
+          onClose={handleClikButtunClose}
+          onUpdateAvatar={handleUpdateAvatar}
+        />
 
-          <AddPlacePopup
-            isOpen={isAddPlacePopupOpen}
-            onClose={handleClikButtunClose}
-            AddPlacePopup={handleAddPlaceSubmit}
-          />
+        <ImagePopup
+          card={selectedCard}
+          isOpen={isPhotoPopupOpen}
+          onClose={handleClikButtunClose}
+        />
 
-          <EditAvatarPopup
-            isOpen={isEditAvatarPopupOpen}
-            onClose={handleClikButtunClose}
-            onUpdateAvatar={handleUpdateAvatar}
-          />
-
-          <ImagePopup
-            card={selectedCard}
-            isOpen={isPhotoPopupOpen}
-            onClose={handleClikButtunClose}
-          />
-
-          <InfoTooltip
-            isOpen={isInfoTooltipOpen}
-            onClose={handleClikButtunClose}
-            isLogIn={false}
-          />
-        </BrowserRouter>
+        <InfoTooltip
+          isOpen={isInfoTooltipOpen}
+          onClose={handleClikButtunClose}
+          isLogInSuccess={isRegisterSuccess}
+        />
       </CurrentUserContext.Provider>
     </>
   );
