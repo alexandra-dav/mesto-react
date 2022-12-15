@@ -1,7 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import * as auth from "../utils/auth.js";
 
 function Register({onRegister}) {
   const [data, setData] = useState({
@@ -18,18 +17,7 @@ function Register({onRegister}) {
   const handlSubmit = (e) => {
     e.preventDefault();
     let { password, email } = data;
-/*     
-    auth.register({password, email}).then((res) => {
-      console.log(res);
-      if (res.statusCode !== 400) {
-        console.log('Ошибка не 400, возможно нет ошибки :)');
-        history.push('/sing-in');
-      } else {
-        console.log('Ошибка все же 400');
-      }
-    }); */
-    onRegister({password, email});
-    
+    onRegister({password, email});    
   }
 
   return (

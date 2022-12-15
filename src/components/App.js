@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import * as auth from "../utils/auth.js";
 import { Route, Switch, useHistory } from "react-router-dom";
 import { Header } from "./Header";
 import { Main } from "./Main";
@@ -7,6 +6,7 @@ import { Footer } from "./Footer";
 import { PopupWithForm } from "./PopupWithForm";
 import { ImagePopup } from "./ImagePopup";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
+import * as auth from "../utils/auth.js";
 import { api } from "../utils/Api";
 import { EditProfilePopup } from "./EditProfilePopup";
 import { EditAvatarPopup } from "./EditAvatarPopup";
